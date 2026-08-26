@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Cat vs Dog Voting</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>🐱 Cat vs Dog 🐶</h1>
+
+        <p class="subtitle">
+            The ultimate battle.
+        </p>
+
+        <div class="options">
+
+            <button class="vote-button cat" onclick="vote('cat')">
+                🐱
+                <span>CAT</span>
+            </button>
+
+            <button class="vote-button dog" onclick="vote('dog')">
+                🐶
+                <span>DOG</span>
+            </button>
+
+        </div>
+
+        <div id="message"></div>
+
+        <button class="results-button" onclick="loadResults()">
+            View Results
+        </button>
+
+        <div id="results"></div>
+
+    </div>
+
+    <script src="app.js"></script>
+
+</body>
+
+</html>
