@@ -36,5 +36,34 @@ pipeline {
               echo 'Code quality checks passed.'
     }
 }
+stage('Docker Build') {
+            steps {
+                echo 'Building frontend Docker image'
+
+                sh '''
+                    docker build \
+                        -t voting-frontend:latest \
+                        ./frontend-voting
+                '''
+
+                echo 'Building backend Docker image'
+
+                sh '''
+                    docker build \
+                        -t voting-backend:latest \
+                        ./backend-voting
+                '''
+
+                echo 'Building worker Docker image'
+
+                sh '''
+                    docker build \
+                        -t voting-worker:latest \
+                        ./worker-voting
+                '''
+
+                echo 'All Docker images built successfully.'
+            }
+        }
     }
 }
