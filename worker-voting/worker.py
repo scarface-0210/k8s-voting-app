@@ -5,7 +5,6 @@ import time
 import psycopg2
 import redis
 
-
 REDIS_HOST = os.getenv(
     "REDIS_HOST",
     "redis"
