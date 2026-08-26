@@ -9,5 +9,15 @@ pipeline {
                 echo 'Git repo has been cloned successfully.'
             }
         }
+        stage('Test') {
+            steps {
+                echo 'Running Python syntax checks'
+
+                sh 'python3 -m py_compile backend-voting/app.py'
+                sh 'python3 -m py_compile worker-voting/worker.py'
+
+                echo 'Python syntax checks passed.'
+            }
+       }
     }
 }
