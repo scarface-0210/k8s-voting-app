@@ -1,6 +1,8 @@
 pipeline {
     agent any
-
+    environment {
+        DOCKER_REPO = 'vinithdkumar/k8s-voting-app'
+    }
     stages {
         stage('Checkout') {
             steps {
@@ -36,7 +38,7 @@ pipeline {
               echo 'Code quality checks passed.'
     }
 }
-stage('Docker Build') {
+       stage('Docker Build') {
             steps {
                 echo 'Building frontend Docker image'
 
@@ -65,5 +67,26 @@ stage('Docker Build') {
                 echo 'All Docker images built successfully.'
             }
         }
+       stage('Docker Push') {
+          steps {
+            withCredentials([
+              usernamePassword(
+                credentialsId: 'dockerhub',
+                usernameVariable: 'DOCKER_USER',
+                passwordVariable: 'DOCKER_PASSWORD'
+            )
+        ]) {
+            sh '''
+                echo "$DOCKER_PASSWORD" | docker login \
+                    -u "$DOCKER_USER" \
+                    --password-stdin
+
+                docker push ${DOCKER_REPO}:frontend-${BUILD_NUMBER}
+                docker push ${DOCKER_REPO}:backend-${BUILD_NUMBER}
+                docker push ${DOCKER_REPO}:worker-${BUILD_NUMBER}
+            '''
+        }
+    }
+}
     }
 }
