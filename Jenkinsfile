@@ -36,15 +36,15 @@ pipeline {
                '''
 
               echo 'Code quality checks passed.'
-    }
-}
+           }
+       }
        stage('Docker Build') {
             steps {
                 echo 'Building frontend Docker image'
 
                 sh '''
                     docker build \
-                        -t voting-frontend:latest \
+                        -t voting-frontend:${BUILD_NUMBER} \
                         ./frontend-voting
                 '''
 
@@ -52,7 +52,7 @@ pipeline {
 
                 sh '''
                     docker build \
-                        -t voting-backend:latest \
+                        -t voting-backend:${BUILD_NUMBER} \
                         ./backend-voting
                 '''
 
@@ -60,7 +60,7 @@ pipeline {
 
                 sh '''
                     docker build \
-                        -t voting-worker:latest \
+                        -t voting-worker:${BUILD_NUMBER} \
                         ./worker-voting
                 '''
 
