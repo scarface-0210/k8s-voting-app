@@ -19,5 +19,22 @@ pipeline {
                 echo 'Python syntax checks passed.'
             }
        }
+       stage('Code Quality') {
+           steps {
+               echo 'Running Python code quality checks'
+
+               sh '''
+               python3 -m venv .venv
+               . .venv/bin/activate
+
+               pip install --upgrade pip
+               pip install ruff
+
+               ruff check backend-voting worker-voting
+               '''
+
+              echo 'Code quality checks passed.'
+    }
+}
     }
 }
