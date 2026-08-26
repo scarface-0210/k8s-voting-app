@@ -51,18 +51,10 @@ pipeline {
                 echo 'Building backend Docker image'
 
                 sh '''
-                    docker build \
-                        -t voting-backend:${BUILD_NUMBER} \
-                        ./backend-voting
-                '''
-
-                echo 'Building worker Docker image'
-
-                sh '''
-                    docker build \
-                        -t voting-worker:${BUILD_NUMBER} \
-                        ./worker-voting
-                '''
+                    docker build -t ${DOCKER_REPO}:frontend-${BUILD_NUMBER} ./frontend-voting
+                    docker build -t ${DOCKER_REPO}:backend-${BUILD_NUMBER} ./backend-voting
+                    docker build -t ${DOCKER_REPO}:worker-${BUILD_NUMBER} ./worker-voting
+                   '''
 
                 echo 'All Docker images built successfully.'
             }
