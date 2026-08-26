@@ -1,16 +1,15 @@
-import os
 import json
+import os
 import time
 
-import redis
 import psycopg2
+import redis
 
 
 REDIS_HOST = os.getenv(
     "REDIS_HOST",
     "redis"
 )
-
 
 DB_HOST = os.getenv(
     "DB_HOST",
@@ -61,7 +60,6 @@ def initialize_database():
 
     cursor = conn.cursor()
 
-
     cursor.execute("""
 
         CREATE TABLE IF NOT EXISTS votes (
@@ -76,7 +74,6 @@ def initialize_database():
 
     """)
 
-
     conn.commit()
 
     cursor.close()
@@ -88,11 +85,9 @@ def process_vote(vote):
 
     choice = vote["choice"]
 
-
     conn = get_db_connection()
 
     cursor = conn.cursor()
-
 
     cursor.execute(
 
@@ -105,14 +100,11 @@ def process_vote(vote):
 
     )
 
-
     conn.commit()
-
 
     cursor.close()
 
     conn.close()
-
 
     redis_client.hincrby(
         "results",
@@ -133,7 +125,7 @@ def main():
 
             break
 
-        except Exception as error:
+        except Exception as error:  # noqa: BLE001
 
             print(
                 f"Database unavailable: {error}"
@@ -144,7 +136,6 @@ def main():
 
     print("Worker ready.")
 
-
     while True:
 
         try:
@@ -154,29 +145,23 @@ def main():
                 timeout=5
             )
 
-
             if result is None:
 
                 continue
 
-
             _, vote_data = result
-
 
             vote = json.loads(
                 vote_data
             )
 
-
             print(
                 f"Processing vote: {vote}"
             )
 
-
             process_vote(vote)
 
-
-        except Exception as error:
+        except Exception as error:  # noqa: BLE001
 
             print(
                 f"Worker error: {error}"
